@@ -1,92 +1,108 @@
-# mvc-thermostat
+# TP2 : MVC avec le Thermo-geeko-stat
+
+Vous avez commencé à voir en R2.02 (Interfaces Homme/Machine) le patron MVC (Modèle-Vue-Contrôleur).
+Dans ce TP vous allez approfondir votre compréhension en implémentant ce patron sur une application très simple : un thermostat (de *geek*).
+
+Ce patron se basant sur la notion d’Observateur/Observé, vous réutiliserez les classes du TP précédant.
+
+Le TP sera aussi l’occasion de réviser vos connaissances en JavaFX.
+Vous pouvez utiliser la classe <code>JavaFXSimpleExample</code> fournie en exemple pour faire quelques essais préliminaires et vous remettre dans le bain (dans ce cas modifez le pom.xml pour qu'il exécute cette classe).
+
+## 1. Un modèle, des vues
+
+Un thermostat dans sa plus simple expression est un appareil ayant une température désirée et régulant le chauffage pour que la température réelle soit le plus proche possible de la température désirée.
+On ne s’occupera bien sûr pas des capteurs et de la température réelle ici, ni du chauffage, mais seulement de pouvoir régler la température désirée.
+
+On a donc un modèle et un affichage (vue + contrôleur) très simple.
+
+**Q1.1** Quel affichage est nécessaire pour seulement régler la température désirée ?
+
+**Q1.2** Que devrait contenir le modèle de l’application ?
+
+Pour rappel, le modèle :
+- Est indépendant de la (des) vue(s). Par exemple, pas de « import javafx » ;
+- contient les données nécessaires à l’application ;
+- contient aussi le plus de comportement possible sur ces données (mais sans s’occuper de l’affichage)
+
+Donc quelle(s) donnée(s) doit contenir ce modèle ? Quel(s) comportement(s) ?
 
 
+**Q1.3** Faites une première version de l’application avec un modèle et un affichage simple.
 
-## Getting started
+On doit pouvoir voir la valeur désirée du thermo-geeko-stat, changer cette valeur soit en absolu, soit en l’incrémentant ou décrémentant de 1 degré à la fois.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+*Optionnel* : Permettre aussi l’incrément/décrément de 5 en 5 (avec une interaction adaptée).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+S’agissant d’une implémentation MVC, les communications du modèle vers la vue (l’affichage) doivent se faire suivant le patron observateur/observé.
 
-## Add your files
+Qui est l’observateur ? Qui est l’observé ?
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Note 1 : Vous pouvez reprendre votre classe et interface du TP précédant et les copier dans le package <code>fr.univlille.iutinfo.m3105.utils</code> de ce TP.
+Ou bien vous pouvez utiliser la classes et l'interface qui vous sont proposées.
 
-```
-cd existing_repo
-git remote add origin https://gitlab.univ-lille.fr/thomas.dujardin2.etu/mvc-thermostat.git
-git branch -M main
-git push -uf origin main
-```
+Note 2 : Puisque vous allez faire plusieurs vues (fenêtres) dans ce TP, il est plus pratique de ne pas utiliser le <code>PrimaryStage</code> que votre classe principale (qui hérite de Application) vous fournit dans la méthode <code>public void start(Stage primaryStage)</code>.
+Il sera plus naturel que chaque vue créée sa propre instance de stage.
 
-## Integrate with your tools
+**Q1.4** Notez qu’avec une seule vue, ce patron est inutilement compliqué.
+Mais si on a plusieurs vues (par exemple un thermostat à deux extrémités d’une grande pièce), l’utilisation de Observateur/Observé prend son sens.
 
-- [ ] [Set up project integrations](https://gitlab.univ-lille.fr/thomas.dujardin2.etu/mvc-thermostat/-/settings/integrations)
+Rajoutez maintenant une nouvelle vue (ou 2, ou 3) en créant simplement des nouveaux objets de la classe vue (une ligne Java).
+Vérifiez que toutes les vues sont toujours synchronisées (affichent la même température désirée) grâce au MVC (et aux observateurs/observé).
+On doit pouvoir aussi modifier la températureen la saisissant directement dans le champs texte (d'une des vues). Dans ce cas aussi, toutes les vues doivent se mettre à jour.
 
-## Collaborate with your team
+*Optionel* : Créez une nouvelle vue utilisant un Slider pour afficher et modifier la température désirée.
+On peut décider que les températures sont bornées entre -10.0 ⁰C et +30.0⁰C (même pour thermostat de *geek*).
+Bien sûr, les anciennes vues doivent continuer à fonctionner.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+![Exemple de plusieurs vues synchornisées sur un modèle](documentation/multipleViews.gif)
 
-## Test and Deploy
+## 2. Un modèle plus riche
 
-Use the built-in continuous integration in GitLab.
+Pour mériter véritablement son nom de thermostat *geek*, le themo-geeko-stat doit pouvoir accepter des températures dans n’importe quelle échelle de température.
+La page [https://fr.wikipedia.org/wiki/Température](https://fr.wikipedia.org/wiki/Température) vous donnera les informations nécessaires sur toutes les échelles de températures existantes : Celsius, Delisle, Fahrenheit, Kelvin, Leyden, Newton, Rankine, Réaumur ou Rømer.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+**Q2.1** Vous allez d’abord créer un type énuméré avec toutes ces possibilités.
+En plus de définir les constantes identifiant chaque échelle, votre type énuméré doit aussi associer un nom affichable (*i.e.* une String) à la constante et une abbréviation (« C » pour Celsius, ...).
+Pour cela définissez des attributs, un constructeur et des getters dans votre enum. 
 
-***
+**Q2.2** On veut pouvoir convertir les températures entre les différentes échelles.
+Pour cela on vous propose d’utiliser un échelle « pivot » vers laquelle, et à partir de laquelle, toutes les autres pourront être converties.
+On utilisera par exemple l’échelle Kelvin pour cela (mais n’importe quel autre choix serait possible).
 
-# Editing this README
+Terminez en implémentant les méthodes 
+- <code>double toKelvin(double value)</code>
+- <code>double fromKelvin(double value)</code>
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+qui pour chaque échelle, transforme la valeur en paramètre en Kelvin ou de Kelvin vers l’échelle elle même.
+Votre type Echelle est maintenant terminé.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+**Q2.3** Vous allez maintenant faire de la température une classe connaissant sa propre valeur (la température) et son échelle :
+- <code>public Echelle getEchelle();</code>
+- <code>public double getTemperature();</code>
+- <code>public void setTemperature(double val);</code>
+- <code>public void incrementTemperature();</code>
+- <code>public void decrementTemperature();</code>
 
-## Name
-Choose a self-explaining name for your project.
+L’échelle est fixée à la création de l’objet Temperature (paramètre du constructeur).
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+Les méthodes travaillent directement dans l’échelle de l’objet.
+C’est à dire par exemple que <code>incrementTemperature()</code> augmente de 1 degré dans l’échelle, ou que <code>setTemperature(0.0)</code> met au zéro de l’échelle considérée.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+**Q2.4** Finalement, les température doivent être des propriétés connectables de telle façon que modifier la valeur d’une température (dans son échelle) mette à jour les températures qui lui sont connectée, chacune dans son échelle.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+## 3. Un thermostat de *geek*
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Vous allez maintenant joindre le tout pour que le thermo-geeko-stat puisse afficher et modifier sa température dans différentes fenêtres en différentes échelles.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+**Q3.1** Reprenez les fenêtres d’affichage faites à la question 1 et modifiez les pour qu’elles travaillent avec un modèle qui est une Temperature.
+La fenêtre affichera son échelle en titre.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+**Q3.2** Créez plusieurs vues avec chacune une échelle différente, mais avec tous les modèles (températures) connectées entre elles.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Exemple d’affichage final :
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+![Exemple de plusieurs vues dans différentes échelles](documentation/multipleViewsAndScales.png)
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+*Optionel* : Ajoutez un menu qui permette de créer dynamiquement des nouvelles vues dans des échelles choisies.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+*Optionel* : Ajoutez un menu qui permette de changer dynamiquement l'échelle d'une vue.
