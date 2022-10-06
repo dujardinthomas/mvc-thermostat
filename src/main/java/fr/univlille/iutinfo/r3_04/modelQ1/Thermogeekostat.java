@@ -4,12 +4,16 @@ import fr.univlille.iutinfo.r3_04.utils.Subject;
 
 public class Thermogeekostat extends Subject implements ITemperature {
 
-	public double d = 20;
-	
+	public double tempMin = -10;
+	public double tempMax = 30;
+	public double tempValue = 20;
+
+	public double d = tempValue;
+
 	@Override
 	public void setTemperature(double d) {
 		this.d=d;
-		
+
 	}
 
 	@Override
@@ -18,18 +22,31 @@ public class Thermogeekostat extends Subject implements ITemperature {
 		return d;
 	}
 
+
+	@Override
+	public void changeValues(double v) {
+		this.d=v;
+		this.notifyObservers(d);
+	}
+
 	@Override
 	public void incrementTemperature() {
-		this.d++;
-		this.notifyObservers(d);
-		
+		if(d<tempMax && d>=tempMin) {
+			this.d++;
+			this.notifyObservers(d);
+			System.out.println("new + : " +d);
+		}
+
 	}
 
 	@Override
 	public void decrementTemperature() {
-		this.d--;
-		this.notifyObservers(d);
-		
+		if(d<=tempMax && d>tempMin) {
+			this.d--;
+			this.notifyObservers(d);
+			System.out.println("new - : " +d);
+		}
+
 	}
 
 }

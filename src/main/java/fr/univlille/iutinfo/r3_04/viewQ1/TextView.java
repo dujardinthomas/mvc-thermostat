@@ -21,8 +21,8 @@ public class TextView extends Stage implements ITemperatureView, Observer {
 	TextField tf;
 
 
-	public TextView(Thermogeekostat model) {
-		this.model = model;
+	public TextView(Thermogeekostat m) {
+		this.model = m;
 		model.attach(this);
 
 		VBox root = new VBox();
@@ -47,6 +47,8 @@ public class TextView extends Stage implements ITemperatureView, Observer {
 		this.setScene(scene);
 		this.setTitle("Gestion température");
 		this.show();
+
+		this.setX(333);
 	}
 
 	@Override
@@ -58,13 +60,11 @@ public class TextView extends Stage implements ITemperatureView, Observer {
 	@Override
 	public void incrementAction() {
 		model.incrementTemperature();
-
 	}
 
 	@Override
 	public void decrementAction() {
 		model.decrementTemperature();
-
 	}
 
 	public void update(Subject subj) {
@@ -73,7 +73,13 @@ public class TextView extends Stage implements ITemperatureView, Observer {
 
 	public void update(Subject subj, Object data) { //Appeller a chaque mise a jour = a chaque clique
 		tf.setText(data.toString());	
-		System.out.println(data);
+		//System.out.println(data);
+	}
+
+	@Override
+	public void changeValues(double v) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

@@ -7,5 +7,6 @@ public interface ITemperature {
 
 	public void incrementTemperature();
 	public void decrementTemperature();
+	void changeValues(double v);
 
 }

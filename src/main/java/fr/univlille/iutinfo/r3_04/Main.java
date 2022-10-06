@@ -1,6 +1,7 @@
 package fr.univlille.iutinfo.r3_04;
 
 import fr.univlille.iutinfo.r3_04.modelQ1.Thermogeekostat;
+import fr.univlille.iutinfo.r3_04.viewQ1.SliderView;
 import fr.univlille.iutinfo.r3_04.viewQ1.TextView;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class Main extends Application {
 		
 		//new TextView( thermo);
 		new TextView( thermo);
+		new SliderView(thermo);
 
 	}
 

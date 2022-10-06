@@ -44,4 +44,10 @@ public class ConnectableProperty extends ObservableProperty implements Observer 
 		setValue(data);
 	}
 
+	@Override
+	public void changeValues(double v) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
