@@ -63,7 +63,7 @@ public class SliderView extends Stage implements ITemperatureView, Observer {
 		HBox hbox = new HBox(4);
 		hbox.getChildren().addAll(temp, label);
 		vbox.getChildren().addAll(hbox, bPlus, slider, bMoins);
-		Scene scene = new Scene(vbox,5,200);
+		Scene scene = new Scene(vbox,150,200);
 		this.setScene(scene);
 		this.setTitle("Gestion température");
 		this.show();

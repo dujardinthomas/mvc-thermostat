@@ -2,40 +2,50 @@ package fr.univlille.iutinfo.r3_04.modelQ2;
 
 import fr.univlille.iutinfo.r3_04.modelQ1.ITemperature;
 import fr.univlille.iutinfo.r3_04.utils.ConnectableProperty;
+import fr.univlille.iutinfo.r3_04.utils.Subject;
 
 public class Temperature extends ConnectableProperty implements ITemperature {
 
-	public Temperature(Echelle celsius) {
-		// TODO Auto-generated constructor stub
-	}
 
+	protected Echelle echelle;
+
+	public Temperature(Echelle e) {
+		super();
+		this.setValue(0.0);
+		echelle = e;
+	}
+	
 	public Echelle getEchelle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		return echelle;
 
-	@Override
-	public void setTemperature(double d) {
-		// TODO Auto-generated method stub
-		
 	}
-
-	@Override
 	public Double getTemperature() {
-		// TODO Auto-generated method stub
-		return null;
+		return (double)this.getValue();
+	}
+
+	public void setTemperature(double val) {
+		this.setValue(val);
 	}
 
 	@Override
 	public void incrementTemperature() {
-		// TODO Auto-generated method stub
+		setValue( (double)value + 1);
 		
 	}
-
 	@Override
 	public void decrementTemperature() {
-		// TODO Auto-generated method stub
-		
+		setValue( (double)value - 1);
 	}
+	
+	@Override
+	public void update(Subject other, Object data) {
+		Temperature tOther = (Temperature) other;
+		double tK =  tOther.echelle.toKelvin((double) data);
+		
+		this.setValue(echelle.fromKelvin(tK));
+	}
+
+	
+	
 
 }
